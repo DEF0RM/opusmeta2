@@ -328,6 +328,7 @@ composer.addPass(new OutputPass());
 
 // Mouse Tracking & Interaction State
 const mouse = new THREE.Vector2(0, 0);
+let hasInteracted = false;
 const targetMouse = new THREE.Vector2(0, 0);
 const raycaster = new THREE.Raycaster();
 const mouseWorldPos = new THREE.Vector3(params.initialLightX, params.initialLightY, params.initialLightZ);
@@ -335,11 +336,13 @@ const targetMouseWorldPos = new THREE.Vector3(0, 0, 0);
 const invisiblePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 
 window.addEventListener('mousemove', (e) => {
+    hasInteracted = true;
     targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 });
 
 window.addEventListener('touchmove', (e) => {
+    hasInteracted = true;
     if (e.touches.length > 0) {
         targetMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
         targetMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
@@ -347,6 +350,7 @@ window.addEventListener('touchmove', (e) => {
 }, { passive: true });
 
 window.addEventListener('touchstart', (e) => {
+    hasInteracted = true;
     if (e.touches.length > 0) {
         targetMouse.x = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
         targetMouse.y = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
@@ -1644,6 +1648,7 @@ function animate() {
     // Raycast: prioritize wormhole (throat) over torus
     // Since ghost meshes are removed, we just use the invisible plane for lighting interaction
     raycaster.ray.intersectPlane(invisiblePlane, targetMouseWorldPos);
+    if (!hasInteracted) { targetMouseWorldPos.set(9999, 9999, 9999); }
 
     // Smooth lerp to avoid harsh jumps between surfaces
     const lerpSpeed = Math.min(1.0, delta * 6.0);
