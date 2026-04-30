@@ -9,6 +9,7 @@ import TorusScene from './TorusScene';
 export default function PromoHero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
+  const mainTitleRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const subTitleRef = useRef<HTMLDivElement>(null);
   const dashedLineRef = useRef<HTMLDivElement>(null);
@@ -20,11 +21,15 @@ export default function PromoHero() {
     const tl = gsap.timeline();
 
     // Reset initial states
-    gsap.set([headerRef.current, contentRef.current, subTitleRef.current, dashedLineRef.current], { 
+    const isMobile = window.innerWidth <= 768;
+    
+    gsap.set([headerRef.current, mainTitleRef.current, contentRef.current, subTitleRef.current, dashedLineRef.current], { 
       opacity: 0, 
       y: 20 
     });
-    gsap.set(comingSoonRef.current, { y: 100 });
+    
+    // On mobile, coming soon bar is at the top, so we slide it from further top
+    gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100 });
     gsap.set(backgroundRef.current, { opacity: 0 });
 
     // 1. Background Torus fades in
@@ -35,7 +40,7 @@ export default function PromoHero() {
     });
 
     // 2. Main content & Subtitle fade in together
-    tl.to([headerRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], {
+    tl.to([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], {
       opacity: 1,
       y: 0,
       duration: 1.5,
@@ -60,55 +65,67 @@ export default function PromoHero() {
 
   return (
     <div className={styles.heroWrapper} ref={containerRef}>
+      {/* Side Border Lines */}
+      <div className={styles.sideLineLeft} />
+      <div className={styles.sideLineRight} />
+
       {/* Background Layer for Torus */}
       <div className={styles.canvasBackground} ref={backgroundRef}>
         <TorusScene />
         <div className={styles.torusGlow} />
       </div>
 
-      {/* Header Section */}
-      <header className={styles.header} ref={headerRef}>
-        <div className={styles.logoWrapper}>
-          <Image
-            src="/pre_white_logo.svg"
-            alt="Metric Logo"
-            width={48}
-            height={48}
-          />
-        </div>
-        <h1 className={styles.mainTitle}>
-          EVERYTHING ONCHAIN <br />
-          PRICED TO REALITY
+      {/* Logo & Desktop Title Section */}
+      <div className={styles.logoSection} ref={headerRef}>
+        <Image
+          src="/pre_white_logo.svg"
+          alt="Metric Logo"
+          width={48}
+          height={48}
+        />
+        <h1 className={`${styles.mainTitle} ${styles.desktopOnly}`} ref={mainTitleRef}>
+          EVERYTHING ONCHAIN<br />PRICED TO REALITY
         </h1>
-      </header>
+      </div>
 
       {/* Middle Section (Overlay) */}
       <div className={styles.middleSection} ref={contentRef}>
         <div className={`${styles.coord} ${styles.coordLeft}`} ref={el => { if (el) coordsRef.current[0] = el; }}>
           <span className={styles.arrowIcon}>⊢</span>
-          <span className={styles.coordValue}>X3.4553</span>
-          <div className={styles.connectingLine} />
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>X3.4553</span>
+          <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
         </div>
 
         <div className={styles.spacer} />
 
         <div className={`${styles.coord} ${styles.coordRight}`} ref={el => { if (el) coordsRef.current[1] = el; }}>
-          <div className={styles.connectingLine} />
-          <span className={styles.coordValue}>Y3.4553</span>
+          <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>Y3.4553</span>
           <span className={styles.arrowIcon}>⊣</span>
         </div>
       </div>
 
-      {/* Footer Area with Subtitle and Coming Soon Bar */}
+      {/* Title & Text Area */}
       <div className={styles.footerArea}>
-        <span className={styles.subTitle} ref={subTitleRef}>
-          the programmable liquidity layer of real markets
-        </span>
-        <div className={styles.dashedLine} ref={dashedLineRef} />
-
-        <div className={styles.comingSoonBar} ref={comingSoonRef}>
-          <p className={styles.comingSoonText}>COMING SOON</p>
+        {/* Mobile-only Title */}
+        <h1 className={`${styles.mainTitle} ${styles.mobileOnly}`}>
+          EVERYTHING ON<br />
+          CHAIN PRICED<br />
+          TO REALITY
+        </h1>
+        
+        <div className={styles.subTextGroup}>
+          <div className={styles.dashedLine} ref={dashedLineRef} />
+          <span className={styles.subTitle} ref={subTitleRef}>
+            <span className={styles.desktopOnly}>the programmable liquidity layer of real markets</span>
+            <span className={styles.mobileOnly}>THE PROGRAMMABLE LIQUIDITY<br />LAYER OF REAL MARKETS</span>
+          </span>
         </div>
+      </div>
+
+      {/* Coming Soon Bar */}
+      <div className={styles.comingSoonBar} ref={comingSoonRef}>
+        <p className={styles.comingSoonText}>COMING SOON</p>
       </div>
     </div>
   );
