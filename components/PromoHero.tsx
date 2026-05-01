@@ -16,59 +16,80 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
   const coordsRef = useRef<HTMLDivElement[]>([]);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const comingSoonRef = useRef<HTMLDivElement>(null);
+  const sideLineLeftRef = useRef<HTMLDivElement>(null);
+  const sideLineRightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!shouldManifest) return;
+
     const tl = gsap.timeline();
 
     // Reset initial states
     const isMobile = window.innerWidth <= 768;
     
-    gsap.set([headerRef.current, mainTitleRef.current, contentRef.current, subTitleRef.current, dashedLineRef.current], { 
+    gsap.set([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], { 
       opacity: 0, 
-      y: 20 
+      y: 40,
+      scale: 0.5,
+      letterSpacing: '0.2em',
+      transformOrigin: 'center center'
     });
     
-    // On mobile, coming soon bar is at the top, so we slide it from further top
-    gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100 });
+    gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100, opacity: 0 });
     gsap.set(backgroundRef.current, { opacity: 0 });
+    gsap.set(coordsRef.current, { opacity: 0 });
+    
+    // Initial state for side lines
+    gsap.set(sideLineLeftRef.current, { x: -50, opacity: 0 });
+    gsap.set(sideLineRightRef.current, { x: 50, opacity: 0 });
 
     // 1. Background Torus fades in
     tl.to(backgroundRef.current, {
       opacity: 1,
-      duration: 1.5,
+      duration: 1.2,
       ease: 'power2.out'
     });
 
-    // 2. Main content & Subtitle fade in together
+    // 2. Side Lines slide in
+    tl.to([sideLineLeftRef.current, sideLineRightRef.current], {
+      x: 0,
+      opacity: 1,
+      duration: 1.2,
+      ease: 'expo.out'
+    }, "-=0.8");
+
+    // 3. Main content dramatic scale up & Footer slide up
     tl.to([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], {
       opacity: 1,
       y: 0,
-      duration: 1.2,
-      stagger: 0.1,
+      scale: 1,
+      letterSpacing: 'normal',
+      duration: 2.0,
+      stagger: 0.15,
       ease: 'expo.out'
-    }, "-=0.5");
-
-    // 3. Footer Bar slides up
-    tl.to(comingSoonRef.current, {
-      y: 0,
-      duration: 1.0,
-      ease: 'power4.out'
     }, "-=1.0");
 
-    // 4. Coordinates (including internal arrows) fade in at the end of the spread
+    tl.to(comingSoonRef.current, {
+      y: 0,
+      opacity: 1,
+      duration: 1.8,
+      ease: 'expo.out'
+    }, "<"); // Perfect sync with content
+
+    // 4. Coordinates fade in
     tl.to(coordsRef.current, {
       opacity: 1,
-      duration: 0.8,
-      stagger: 0.1
-    }, "-=0.5");
+      duration: 1.2,
+      stagger: 0.2
+    }, "-=1.2");
 
   }, [shouldManifest]);
 
   return (
     <div className={styles.heroWrapper} ref={containerRef}>
       {/* Side Border Lines */}
-      <div className={styles.sideLineLeft} />
-      <div className={styles.sideLineRight} />
+      <div className={styles.sideLineLeft} ref={sideLineLeftRef} />
+      <div className={styles.sideLineRight} ref={sideLineRightRef} />
 
       {/* Background Layer for Torus */}
       <div className={styles.canvasBackground} ref={backgroundRef}>
