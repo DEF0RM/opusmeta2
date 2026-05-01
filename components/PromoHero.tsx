@@ -39,23 +39,35 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     
     // Select all split characters
     const chars = containerRef.current?.querySelectorAll('.char');
-    if (!chars || chars.length === 0) return;
-    
-    gsap.set(chars, { 
-      opacity: 0, 
-      scale: 0.3,
-      y: 20,
-      transformOrigin: 'center center'
-    });
+    if (chars && chars.length > 0) {
+      gsap.set(chars, { 
+        opacity: 0, 
+        scale: 0.3,
+        y: 20,
+        transformOrigin: 'center center'
+      });
+    }
 
-    gsap.set([headerRef.current, dashedLineRef.current], { opacity: 0, y: 10 });
-    gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100, opacity: 0 });
-    gsap.set(backgroundRef.current, { opacity: 0 });
-    gsap.set(coordsRef.current, { opacity: 0 });
+    if (headerRef.current && dashedLineRef.current) {
+      gsap.set([headerRef.current, dashedLineRef.current], { opacity: 0, y: 10 });
+    }
+    if (comingSoonRef.current) {
+      gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100, opacity: 0 });
+    }
+    if (backgroundRef.current) {
+      gsap.set(backgroundRef.current, { opacity: 0 });
+    }
+    if (coordsRef.current && coordsRef.current.length > 0) {
+      gsap.set(coordsRef.current, { opacity: 0 });
+    }
     
     // Initial state for side lines
-    gsap.set(sideLineLeftRef.current, { x: -50, opacity: 0 });
-    gsap.set(sideLineRightRef.current, { x: 50, opacity: 0 });
+    if (sideLineLeftRef.current) {
+      gsap.set(sideLineLeftRef.current, { x: -50, opacity: 0 });
+    }
+    if (sideLineRightRef.current) {
+      gsap.set(sideLineRightRef.current, { x: 50, opacity: 0 });
+    }
     
     // Initial state for connecting lines
     const connectingLines = containerRef.current?.querySelectorAll(`.${styles.connectingLine}`);
@@ -74,51 +86,63 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     }
 
     // 1. Background Torus fades in
-    tl.to(backgroundRef.current, {
-      opacity: 1,
-      duration: 1.2,
-      ease: 'power2.out'
-    });
+    if (backgroundRef.current) {
+      tl.to(backgroundRef.current, {
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power2.out'
+      });
+    }
 
     // 2. Side Lines slide in
-    tl.to([sideLineLeftRef.current, sideLineRightRef.current], {
-      x: 0,
-      opacity: 1,
-      duration: 1.2,
-      ease: 'expo.out'
-    }, "-=0.8");
+    if (sideLineLeftRef.current && sideLineRightRef.current) {
+      tl.to([sideLineLeftRef.current, sideLineRightRef.current], {
+        x: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'expo.out'
+      }, "-=0.8");
+    }
 
     // 3. Characters growth (Staggered left-to-right)
-    tl.to(chars, {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      duration: 1.0,
-      stagger: 0.02,
-      ease: 'back.out(1.7)'
-    }, "-=1.0");
+    if (chars && chars.length > 0) {
+      tl.to(chars, {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.0,
+        stagger: 0.02,
+        ease: 'back.out(1.7)'
+      }, "-=1.0");
+    }
 
     // 4. Header & Dashed Line
-    tl.to([headerRef.current, dashedLineRef.current], {
-      opacity: 1,
-      y: 0,
-      duration: 1.0
-    }, "<");
+    if (headerRef.current && dashedLineRef.current) {
+      tl.to([headerRef.current, dashedLineRef.current], {
+        opacity: 1,
+        y: 0,
+        duration: 1.0
+      }, "<");
+    }
 
     // 5. Footer slide up
-    tl.to(comingSoonRef.current, {
-      y: 0,
-      opacity: 1,
-      duration: 1.5,
-      ease: 'expo.out'
-    }, "-=1.5");
+    if (comingSoonRef.current) {
+      tl.to(comingSoonRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'expo.out'
+      }, "-=1.5");
+    }
 
     // 6. Coordinates fade in & lines grow
-    tl.to(coordsRef.current, {
-      opacity: 1,
-      duration: 0.8,
-      stagger: 0.2
-    }, "-=0.8");
+    if (coordsRef.current && coordsRef.current.length > 0) {
+      tl.to(coordsRef.current, {
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.2
+      }, "-=0.8");
+    }
 
     if (connectingLines && connectingLines.length > 0) {
       tl.to(connectingLines, {
