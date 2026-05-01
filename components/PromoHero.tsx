@@ -55,6 +55,13 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     // Initial state for side lines
     gsap.set(sideLineLeftRef.current, { x: -50, opacity: 0 });
     gsap.set(sideLineRightRef.current, { x: 50, opacity: 0 });
+    
+    // Initial state for connecting lines
+    const connectingLines = containerRef.current?.querySelectorAll(`.${styles.connectingLine}`);
+    gsap.set(connectingLines, { scaleX: 0 });
+    // Left line grows from left, Right line grows from right
+    gsap.set(containerRef.current?.querySelector(`.${styles.coordLeft} .${styles.connectingLine}`), { transformOrigin: 'left center' });
+    gsap.set(containerRef.current?.querySelector(`.${styles.coordRight} .${styles.connectingLine}`), { transformOrigin: 'right center' });
 
     // 1. Background Torus fades in
     tl.to(backgroundRef.current, {
@@ -96,12 +103,18 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       ease: 'expo.out'
     }, "-=1.5");
 
-    // 6. Coordinates fade in
+    // 6. Coordinates fade in & lines grow
     tl.to(coordsRef.current, {
       opacity: 1,
-      duration: 1.0,
+      duration: 0.8,
       stagger: 0.2
     }, "-=0.8");
+
+    tl.to(connectingLines, {
+      scaleX: 1,
+      duration: 1.2,
+      ease: 'expo.out'
+    }, "<");
 
   }, [shouldManifest]);
 
