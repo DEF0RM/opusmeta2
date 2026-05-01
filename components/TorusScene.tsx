@@ -1878,6 +1878,11 @@ params.modelScale = 0;
 // Watch for manual trigger
 (window as any).triggerTorusManifest = triggerManifestation;
 
+// If we are already told to manifest on mount, do it after a small delay to ensure assets are ready
+if (shouldManifest) {
+    setTimeout(triggerManifestation, 100);
+}
+
 animate();
 
 
@@ -1903,16 +1908,6 @@ animate();
     return (
         <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
             <canvas id="app-canvas" style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'auto' }} />
-            <ManifestWatcher shouldManifest={shouldManifest} />
         </div>
     );
-}
-
-function ManifestWatcher({ shouldManifest }: { shouldManifest: boolean }) {
-    useEffect(() => {
-        if (shouldManifest && (window as any).triggerTorusManifest) {
-            (window as any).triggerTorusManifest();
-        }
-    }, [shouldManifest]);
-    return null;
 }
