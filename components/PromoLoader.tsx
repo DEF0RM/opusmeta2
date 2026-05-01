@@ -8,6 +8,7 @@ import styles from './PromoLoader.module.css';
 interface PromoLoaderProps {
   progress?: number;
   isExiting?: boolean;
+  isLanding?: boolean;
   onCornersReady?: () => void;
   onExitComplete?: () => void;
 }
@@ -15,6 +16,7 @@ interface PromoLoaderProps {
 export default function PromoLoader({ 
   progress = 0, 
   isExiting = false,
+  isLanding = false,
   onCornersReady,
   onExitComplete 
 }: PromoLoaderProps) {
@@ -86,7 +88,7 @@ export default function PromoLoader({
   }, [isExiting, onExitComplete]);
 
   return (
-    <div className={styles.loaderContainer}>
+    <div className={`${styles.loaderContainer} ${isLanding ? styles.landingMode : ''}`}>
       <div className={styles.content}>
         {/* Corners */}
         <div ref={el => { if (el) cornersRef.current[0] = el; }} className={`${styles.corner} ${styles.topLeft}`} />

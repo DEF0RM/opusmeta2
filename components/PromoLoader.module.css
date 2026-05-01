@@ -10,6 +10,11 @@
   z-index: 10000;
   color: #FFFFFF;
   font-family: 'FoundryGridnik', sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+.loaderContainer.landingMode {
+  background-color: #1D1D1F;
 }
 
 .content {

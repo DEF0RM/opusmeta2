@@ -132,12 +132,9 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
 
       {/* Logo & Desktop Title Section */}
       <div className={styles.logoSection} ref={headerRef}>
-        <Image
-          src="/pre_white_logo.svg"
-          alt="Metric Logo"
-          width={48}
-          height={48}
-        />
+        <div className={styles.torusLogoWrapper}>
+          <TorusScene shouldManifest={shouldManifest} />
+        </div>
         <h1 className={`${styles.mainTitle} ${styles.desktopOnly}`} ref={mainTitleRef}>
           {splitText("EVERYTHING ONCHAIN")}
           <br />
@@ -148,17 +145,17 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       {/* Middle Section (Overlay) */}
       <div className={styles.middleSection} ref={contentRef}>
         <div className={`${styles.coord} ${styles.coordLeft}`} ref={el => { if (el) coordsRef.current[0] = el; }}>
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("X3.4553")}</span>
           <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊢</span>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
-          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("X3.4553")}</span>
         </div>
 
         <div className={styles.spacer} />
 
         <div className={`${styles.coord} ${styles.coordRight}`} ref={el => { if (el) coordsRef.current[1] = el; }}>
-          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("Y3.4553")}</span>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
           <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊣</span>
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("Y3.4553")}</span>
         </div>
       </div>
 
