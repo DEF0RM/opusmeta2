@@ -18,6 +18,16 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
   const comingSoonRef = useRef<HTMLDivElement>(null);
   const sideLineLeftRef = useRef<HTMLDivElement>(null);
   const sideLineRightRef = useRef<HTMLDivElement>(null);
+  const subTitleTextRef = useRef<HTMLDivElement>(null);
+
+  // Helper to wrap characters in spans
+  const splitText = (text: string) => {
+    return text.split('').map((char, index) => (
+      <span key={index} className="char" style={{ display: 'inline-block', whiteSpace: char === ' ' ? 'pre' : 'normal' }}>
+        {char}
+      </span>
+    ));
+  };
 
   useEffect(() => {
     if (!shouldManifest) return;
@@ -27,14 +37,17 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     // Reset initial states
     const isMobile = window.innerWidth <= 768;
     
-    gsap.set([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], { 
+    // Select all split characters
+    const chars = containerRef.current?.querySelectorAll('.char');
+    
+    gsap.set(chars, { 
       opacity: 0, 
-      y: 40,
-      scale: 0.5,
-      letterSpacing: '0.2em',
+      scale: 0.3,
+      y: 20,
       transformOrigin: 'center center'
     });
-    
+
+    gsap.set([headerRef.current, dashedLineRef.current], { opacity: 0, y: 10 });
     gsap.set(comingSoonRef.current, { y: isMobile ? -100 : 100, opacity: 0 });
     gsap.set(backgroundRef.current, { opacity: 0 });
     gsap.set(coordsRef.current, { opacity: 0 });
@@ -58,30 +71,37 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       ease: 'expo.out'
     }, "-=0.8");
 
-    // 3. Main content dramatic scale up & Footer slide up
-    tl.to([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], {
+    // 3. Characters growth (Staggered left-to-right)
+    tl.to(chars, {
       opacity: 1,
-      y: 0,
       scale: 1,
-      letterSpacing: 'normal',
-      duration: 2.0,
-      stagger: 0.15,
-      ease: 'expo.out'
+      y: 0,
+      duration: 1.0,
+      stagger: 0.02,
+      ease: 'back.out(1.7)'
     }, "-=1.0");
 
+    // 4. Header & Dashed Line
+    tl.to([headerRef.current, dashedLineRef.current], {
+      opacity: 1,
+      y: 0,
+      duration: 1.0
+    }, "<");
+
+    // 5. Footer slide up
     tl.to(comingSoonRef.current, {
       y: 0,
       opacity: 1,
-      duration: 1.8,
+      duration: 1.5,
       ease: 'expo.out'
-    }, "<"); // Perfect sync with content
+    }, "-=1.5");
 
-    // 4. Coordinates fade in
+    // 6. Coordinates fade in
     tl.to(coordsRef.current, {
       opacity: 1,
-      duration: 1.2,
+      duration: 1.0,
       stagger: 0.2
-    }, "-=1.2");
+    }, "-=0.8");
 
   }, [shouldManifest]);
 
@@ -93,7 +113,7 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
 
       {/* Background Layer for Torus */}
       <div className={styles.canvasBackground} ref={backgroundRef}>
-        <TorusScene />
+        <TorusScene shouldManifest={shouldManifest} />
         <div className={styles.torusGlow} />
       </div>
 
@@ -106,7 +126,9 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
           height={48}
         />
         <h1 className={`${styles.mainTitle} ${styles.desktopOnly}`} ref={mainTitleRef}>
-          EVERYTHING ONCHAIN<br />PRICED TO REALITY
+          {splitText("EVERYTHING ONCHAIN")}
+          <br />
+          {splitText("PRICED TO REALITY")}
         </h1>
       </div>
 
@@ -131,16 +153,22 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       <div className={styles.footerArea}>
         {/* Mobile-only Title */}
         <h1 className={`${styles.mainTitle} ${styles.mobileOnly}`}>
-          EVERYTHING ON<br />
-          CHAIN PRICED<br />
-          TO REALITY
+          {splitText("EVERYTHING ON")}
+          <br />
+          {splitText("CHAIN PRICED")}
+          <br />
+          {splitText("TO REALITY")}
         </h1>
         
         <div className={styles.subTextGroup}>
           <div className={styles.dashedLine} ref={dashedLineRef} />
           <span className={styles.subTitle} ref={subTitleRef}>
-            <span className={styles.desktopOnly}>the programmable liquidity layer of real markets</span>
-            <span className={styles.mobileOnly}>THE PROGRAMMABLE LIQUIDITY<br />LAYER OF REAL MARKETS</span>
+            <span className={styles.desktopOnly}>{splitText("the programmable liquidity layer of real markets")}</span>
+            <span className={styles.mobileOnly}>
+              {splitText("THE PROGRAMMABLE LIQUIDITY")}
+              <br />
+              {splitText("LAYER OF REAL MARKETS")}
+            </span>
           </span>
         </div>
       </div>
