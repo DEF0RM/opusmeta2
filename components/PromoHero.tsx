@@ -59,10 +59,19 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     
     // Initial state for connecting lines
     const connectingLines = containerRef.current?.querySelectorAll(`.${styles.connectingLine}`);
-    gsap.set(connectingLines, { scaleX: 0 });
-    // Left line grows from left, Right line grows from right
-    gsap.set(containerRef.current?.querySelector(`.${styles.coordLeft} .${styles.connectingLine}`), { transformOrigin: 'left center' });
-    gsap.set(containerRef.current?.querySelector(`.${styles.coordRight} .${styles.connectingLine}`), { transformOrigin: 'right center' });
+    if (connectingLines && connectingLines.length > 0) {
+      gsap.set(connectingLines, { scaleX: 0 });
+    }
+
+    const leftLine = containerRef.current?.querySelector(`.${styles.coordLeft} .${styles.connectingLine}`);
+    if (leftLine) {
+      gsap.set(leftLine, { transformOrigin: 'left center' });
+    }
+
+    const rightLine = containerRef.current?.querySelector(`.${styles.coordRight} .${styles.connectingLine}`);
+    if (rightLine) {
+      gsap.set(rightLine, { transformOrigin: 'right center' });
+    }
 
     // 1. Background Torus fades in
     tl.to(backgroundRef.current, {
@@ -111,11 +120,13 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       stagger: 0.2
     }, "-=0.8");
 
-    tl.to(connectingLines, {
-      scaleX: 1,
-      duration: 1.2,
-      ease: 'expo.out'
-    }, "<");
+    if (connectingLines && connectingLines.length > 0) {
+      tl.to(connectingLines, {
+        scaleX: 1,
+        duration: 1.2,
+        ease: 'expo.out'
+      }, "<");
+    }
 
   }, [shouldManifest]);
 
