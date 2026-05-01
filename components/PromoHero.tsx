@@ -149,15 +149,15 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       <div className={styles.middleSection} ref={contentRef}>
         <div className={`${styles.coord} ${styles.coordLeft}`} ref={el => { if (el) coordsRef.current[0] = el; }}>
           <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊢</span>
-          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>X3.4553</span>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("X3.4553")}</span>
         </div>
 
         <div className={styles.spacer} />
 
         <div className={`${styles.coord} ${styles.coordRight}`} ref={el => { if (el) coordsRef.current[1] = el; }}>
+          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>{splitText("Y3.4553")}</span>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
-          <span className={`${styles.coordValue} ${styles.desktopOnly}`}>Y3.4553</span>
           <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊣</span>
         </div>
       </div>
