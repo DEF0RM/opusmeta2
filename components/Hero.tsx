@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import ScrambleText from './ScrambleText';
-import AnimatedLogo from './AnimatedLogo';
+import TorusScene from './TorusScene';
 import styles from './Hero.module.css';
 
 gsap.registerPlugin(ScrollTrigger);
