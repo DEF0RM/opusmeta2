@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import styles from './PromoHero.module.css';
 import TorusScene from './TorusScene';
 
-export default function PromoHero() {
+export default function PromoHero({ shouldManifest = false }: { shouldManifest?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const mainTitleRef = useRef<HTMLHeadingElement>(null);
@@ -43,25 +43,26 @@ export default function PromoHero() {
     tl.to([headerRef.current, mainTitleRef.current, subTitleRef.current, dashedLineRef.current, contentRef.current], {
       opacity: 1,
       y: 0,
-      duration: 1.5,
+      duration: 1.2,
       stagger: 0.1,
       ease: 'expo.out'
-    }, "-=1.5");
+    }, "-=0.5");
 
     // 3. Footer Bar slides up
     tl.to(comingSoonRef.current, {
       y: 0,
-      duration: 1.2,
+      duration: 1.0,
       ease: 'power4.out'
-    }, "-=0.8");
+    }, "-=1.0");
 
+    // 4. Coordinates (including internal arrows) fade in at the end of the spread
     tl.to(coordsRef.current, {
       opacity: 1,
-      duration: 1,
-      stagger: 0.2
-    }, "-=1");
+      duration: 0.8,
+      stagger: 0.1
+    }, "-=0.5");
 
-  }, []);
+  }, [shouldManifest]);
 
   return (
     <div className={styles.heroWrapper} ref={containerRef}>
@@ -91,7 +92,7 @@ export default function PromoHero() {
       {/* Middle Section (Overlay) */}
       <div className={styles.middleSection} ref={contentRef}>
         <div className={`${styles.coord} ${styles.coordLeft}`} ref={el => { if (el) coordsRef.current[0] = el; }}>
-          <span className={styles.arrowIcon}>⊢</span>
+          <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊢</span>
           <span className={`${styles.coordValue} ${styles.desktopOnly}`}>X3.4553</span>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
         </div>
@@ -101,7 +102,7 @@ export default function PromoHero() {
         <div className={`${styles.coord} ${styles.coordRight}`} ref={el => { if (el) coordsRef.current[1] = el; }}>
           <div className={`${styles.connectingLine} ${styles.desktopOnly}`} />
           <span className={`${styles.coordValue} ${styles.desktopOnly}`}>Y3.4553</span>
-          <span className={styles.arrowIcon}>⊣</span>
+          <span className={styles.arrowIcon} style={{ visibility: 'hidden' }}>⊣</span>
         </div>
       </div>
 

@@ -55,7 +55,7 @@ export default function PromoPage() {
 
       // 2. Spread arrows AND trigger manifestation simultaneously
       tl.to(arrowLeftRef.current, { 
-        x: '-45vw', 
+        x: () => -(window.innerWidth / 2) + 20, 
         duration: 2.5, 
         ease: 'expo.inOut',
         onStart: () => {
@@ -64,7 +64,7 @@ export default function PromoPage() {
         }
       });
       tl.to(arrowRightRef.current, { 
-        x: '45vw', 
+        x: () => (window.innerWidth / 2) - 20, 
         duration: 2.5, 
         ease: 'expo.inOut' 
       }, "<");
