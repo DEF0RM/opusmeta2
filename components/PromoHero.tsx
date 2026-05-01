@@ -39,6 +39,7 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
     
     // Select all split characters
     const chars = containerRef.current?.querySelectorAll('.char');
+    if (!chars || chars.length === 0) return;
     
     gsap.set(chars, { 
       opacity: 0, 
