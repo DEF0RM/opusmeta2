@@ -53,21 +53,23 @@ export default function PromoPage() {
         ease: 'back.out(2)' 
       });
 
-      // 2. Spread arrows AND trigger manifestation simultaneously
+      // 2. Spread arrows AND trigger manifestation with a delay
       tl.to(arrowLeftRef.current, { 
         x: () => -(window.innerWidth / 2) + 32, 
         duration: 2.5, 
-        ease: 'expo.inOut',
-        onStart: () => {
-          setShouldManifest(true);
-          setShowContent(true);
-        }
+        ease: 'expo.inOut'
       });
       tl.to(arrowRightRef.current, { 
         x: () => (window.innerWidth / 2) - 32, 
         duration: 2.5, 
         ease: 'expo.inOut' 
       }, "<");
+
+      // Trigger manifestation and content visibility after arrows have spread a bit
+      tl.call(() => {
+        setShouldManifest(true);
+        setShowContent(true);
+      }, [], "+=0.8");
     }
   }, [isExiting]);
 
