@@ -9,3 +9,16 @@
   z-index: 9999;
   overflow: hidden;
 }
+
+.arrowLeft, .arrowRight {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #FFFFFF;
+  opacity: 0;
+  z-index: 20000;
+  font-family: monospace;
+  pointer-events: none;
+}

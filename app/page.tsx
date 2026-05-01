@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import PromoLoader from '@/components/PromoLoader';
 import styles from './Promo.module.css';
 
@@ -12,6 +13,10 @@ export default function PromoPage() {
   const [isCornersReady, setIsCornersReady] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  const [shouldManifest, setShouldManifest] = useState(false);
+
+  const arrowLeftRef = useRef<HTMLDivElement>(null);
+  const arrowRightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isCornersReady) return;
@@ -33,19 +38,56 @@ export default function PromoPage() {
     return () => clearInterval(interval);
   }, [isCornersReady]);
 
+  // Handle the arrow spread and manifestation trigger
+  useEffect(() => {
+    if (isExiting) {
+      const tl = gsap.timeline();
+      
+      // 1. Initial appear of arrows (they start in center)
+      tl.set([arrowLeftRef.current, arrowRightRef.current], { opacity: 0, scale: 0, x: 0 });
+      tl.to([arrowLeftRef.current, arrowRightRef.current], { 
+        opacity: 1, 
+        scale: 1, 
+        duration: 0.5, 
+        delay: 0.8, // Match loader's corner fly time
+        ease: 'back.out(2)' 
+      });
+
+      // 2. Spread arrows AND trigger manifestation simultaneously
+      tl.to(arrowLeftRef.current, { 
+        x: '-45vw', 
+        duration: 2.5, 
+        ease: 'expo.inOut',
+        onStart: () => {
+          setShouldManifest(true);
+          setShowContent(true);
+        }
+      });
+      tl.to(arrowRightRef.current, { 
+        x: '45vw', 
+        duration: 2.5, 
+        ease: 'expo.inOut' 
+      }, "<");
+    }
+  }, [isExiting]);
+
   return (
     <main className={styles.promoWrapper}>
+      {/* Persistent Transition Arrows */}
+      <div ref={arrowLeftRef} className={styles.arrowLeft}>⊢</div>
+      <div ref={arrowRightRef} className={styles.arrowRight}>⊣</div>
+
       {!showContent && (
         <PromoLoader 
           progress={progress} 
           isExiting={isExiting}
           onCornersReady={() => setIsCornersReady(true)}
-          onExitComplete={() => setShowContent(true)}
+          // onExitComplete is no longer needed to trigger setShowContent here
         />
       )}
 
       {showContent && (
-        <PromoHero />
+        <PromoHero shouldManifest={shouldManifest} />
       )}
     </main>
   );
