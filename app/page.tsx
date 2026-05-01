@@ -69,7 +69,7 @@ export default function PromoPage() {
       tl.call(() => {
         setShouldManifest(true);
         setShowContent(true);
-      }, [], "+=0.8");
+      }, [], "+=1.2");
     }
   }, [isExiting]);
 

@@ -1872,12 +1872,10 @@ initGui();
 rebuildRover();
 updateModelBounds();
 
-params.modelScale = shouldManifest ? (isMobile ? 0.16 : 0.3891) : 0;
+// Set initial scale to 0 (it will be animated in triggerManifestation)
+params.modelScale = 0;
 
-if (shouldManifest) {
-    setTimeout(triggerManifestation, 500);
-}
-
+// Watch for manual trigger
 (window as any).triggerTorusManifest = triggerManifestation;
 
 animate();
