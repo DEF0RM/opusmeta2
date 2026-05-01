@@ -1,0 +1,35 @@
+.divider {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.title {
+  margin: 0 18px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-family: 'FoundryGridnik', var(--font-foundry), sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.blockLeft {
+  position: absolute;
+  left: 0;
+  top: 50%; /* Starts exactly at the vertical center (the line) */
+}
+
+.blockRight {
+  position: absolute;
+  right: 0;
+  top: 50%; /* Starts exactly at the vertical center (the line) */
+}

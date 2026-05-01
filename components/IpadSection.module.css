@@ -1,0 +1,135 @@
+.section {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bgContainer {
+  position: relative;
+  width: 100%;
+  padding: 80px 0 0; /* Remove bottom padding so iPad can touch bottom */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Pin to bottom */
+  overflow: hidden;
+}
+
+.bgImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Pin to bottom */
+}
+
+.ipadContainer {
+  position: relative;
+  width: 881px;
+  max-width: 90vw;
+  aspect-ratio: 1762 / 1026;
+  margin-bottom: -1px; /* Prevent any subpixel gap at the bottom */
+}
+
+.ipadImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.screenArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 93.5%;
+  height: 94%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* We use the entire screen area as the hover target for the logo */
+}
+
+.logoWrapper {
+  width: 300px;
+  height: 300px;
+  /* Relative sizing for mobile */
+  max-width: 40vw;
+  max-height: 40vw;
+}
+
+.bgContainerWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Launch App Button */
+.launchAppWrapper {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+
+.launchAppBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 39px;
+  width: 196px; /* Fixed width to prevent shaking */
+  background: #FCFCF4;
+  color: #1D1D1F !important; /* Force color to stay dark */
+  font-size: 16px;
+  font-family: 'FoundryGridnik', var(--font-foundry), sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+  white-space: nowrap; /* Prevent wide scrambled characters from wrapping */
+  overflow: hidden; /* Hide overflow if scramble gets too wide */
+}
+
+.launchAppBtn:hover {
+  opacity: 0.85;
+  color: #1D1D1F !important;
+}
+
+/* Divider wrapper below the iPad background */
+.dividerWrapper {
+  width: 100%;
+  padding-top: 40px; /* Space between the background end and divider */
+  margin-bottom: 50px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .launchAppWrapper {
+    position: relative;
+    width: 100%;
+    right: auto;
+    bottom: auto;
+  }
+  
+  .launchAppBtn {
+    width: 100%;
+    height: 56px;
+    font-size: 18px;
+  }
+}

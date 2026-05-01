@@ -1,0 +1,199 @@
+.footer {
+  width: 100%;
+  background-color: #1D1D1F;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #343435;
+}
+
+.container {
+  width: 100%;
+}
+
+.grid {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid #343435;
+}
+
+.sideLine {
+  width: 80px;
+  flex-shrink: 0;
+  border-left: 1px solid #343435;
+  border-right: 1px solid #343435;
+}
+
+.logoArea {
+  flex: 1;
+  height: 236px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #343435;
+  position: relative;
+}
+
+.logoCircle::before,
+.logoCircle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 1px;
+  background-color: #343435;
+}
+
+.logoCircle::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.logoCircle::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.linksArea {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.column {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  border-right: 1px solid #343435;
+}
+
+.column:last-child {
+  border-right: none;
+}
+
+.colTitle {
+  color: #FCFCF4;
+  font-size: 16px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.link {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #FCFCF4;
+}
+
+.bottomArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+}
+
+.footerInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.infoIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.infoText {
+  color: #FFFFFF;
+  opacity: 0.4;
+  font-size: 14px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: -0.7px;
+}
+
+.bigLogoWrapper {
+  width: 100%;
+  display: flex;
+}
+
+.bigLogoDesktop {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bigLogoMobile {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .sideLine {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoArea {
+    height: 180px;
+  }
+  
+  .linksArea {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .column {
+    padding: 32px 20px;
+    gap: 40px;
+  }
+  
+  .column:nth-child(2) {
+    border-right: none;
+  }
+  
+  .column:nth-child(3) {
+    grid-column: 1 / -1;
+    border-top: 1px solid #343435;
+    border-right: none;
+  }
+  
+  .bottomArea {
+    padding: 32px 20px;
+  }
+  
+  .footerInfo {
+    margin-bottom: 24px;
+  }
+  
+  .bigLogoDesktop {
+    display: none;
+  }
+  
+  .bigLogoMobile {
+    display: block;
+  }
+}

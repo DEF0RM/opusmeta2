@@ -1,0 +1,162 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #030303;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#app-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #030303;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.5s step-end;
+}
+
+.loader-text {
+  color: #00E5FF;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  font-weight: 200;
+  text-transform: uppercase;
+  animation: p 2s infinite ease-in-out;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+@keyframes p {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Premium lil-gui styling */
+.lil-gui {
+    --background-color: rgba(10, 10, 15, 0.7) !important;
+    --text-color: #e0e5ec !important;
+    --title-background-color: rgba(20, 20, 25, 0.8) !important;
+    --widget-color: rgba(255, 255, 255, 0.08) !important;
+    --hover-color: rgba(255, 255, 255, 0.15) !important;
+    --focus-color: rgba(0, 229, 255, 0.4) !important;
+    --number-color: #00E5FF !important;
+    --string-color: #00E5FF !important;
+    --font-family: 'Inter', -apple-system, sans-serif !important;
+    --font-size: 12px !important;
+    --border-radius: 8px !important;
+    --padding: 12px !important;
+    --spacing: 8px !important;
+    --widget-height: 24px !important;
+    
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+    right: 20px !important;
+    top: 20px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+.lil-gui .title {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.lil-gui .folder > .title {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.lil-gui.root > .children > .folder > .title {
+    border-top: none !important;
+}
+
+/* Detailed Performance Monitor */
+#perf-monitor {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    padding: 16px;
+    color: #e0e5ec;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: none;
+    z-index: 100;
+    pointer-events: none;
+    min-width: 250px;
+}
+
+.perf-header {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.perf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 20px;
+}
+
+.perf-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.perf-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 4px;
+}
+
+.perf-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00E5FF;
+}
+
+/* Fix mobile lil-gui auto fullscreen */
+@media (max-width: 600px) {
+    .lil-gui.root {
+        width: 250px !important;
+        right: 10px !important;
+        top: 10px !important;
+        max-height: 80vh !important;
+        overflow-y: auto !important;
+    }
+}

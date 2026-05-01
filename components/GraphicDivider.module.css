@@ -1,0 +1,14 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 120px 0; /* Top padding is handled by the previous section's bottom padding */
+  background-color: transparent;
+}
+
+.svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}

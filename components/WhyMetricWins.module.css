@@ -1,0 +1,451 @@
+.section {
+  width: 100%;
+  background-color: #1D1D1F;
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0;
+  padding: 40px 0 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  perspective: 1200px;
+}
+
+.header {
+  width: 100%;
+  padding: 0 80px;
+  margin-bottom: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 20;
+}
+
+.title {
+  color: #FFFFFF;
+  font-size: 64px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.svgWrapper {
+  width: 100%;
+  height: 30vh;
+  min-height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  transform-style: preserve-3d;
+  will-change: transform, opacity, filter;
+  position: relative;
+  /* Allow it to be pushed */
+}
+
+.mainSvgDesktop {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.mainSvgMobile {
+  width: 100%;
+  height: auto;
+  display: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  z-index: 30;
+  padding-bottom: 8px;
+  /* Optical alignment with text baseline */
+}
+
+.learnMoreWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: fit-content;
+}
+
+.learnMore {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.learnMore:hover {
+  opacity: 0.8;
+}
+
+.arrow {
+  color: #84E0F7;
+  font-size: 20px;
+}
+
+.learnMoreText {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+}
+
+.footerLine {
+  height: 1px;
+  background-color: #FFFFFF;
+  opacity: 0.2;
+  width: 100%;
+}
+
+.featuresList {
+  width: 100%;
+  margin-top: 40px;
+  border-top: 1px solid #343435;
+  will-change: transform, opacity;
+}
+
+.row {
+  width: 100%;
+  height: 107px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #1D1D1F;
+  border-bottom: 1px solid #343435;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.bgLayers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* Background Layers */
+.layerBlue,
+.layerBeige,
+.layerOlive {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.layerBlue {
+  left: 0;
+  width: 100%;
+  background-color: #84E0F7;
+  z-index: 1;
+}
+
+.layerBeige {
+  right: 90px;
+  width: 280px;
+  background-color: #FCFCF4;
+  transform: translateX(-60px);
+  /* Start hidden under/behind the blue path */
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
+.layerOlive {
+  right: 0;
+  width: 90px;
+  background-color: #A3A46B;
+  transform: translateX(-30px);
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 3;
+}
+
+/* Row Content Layers */
+.rowContentPassive,
+.rowContentActive {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 80px;
+}
+
+.rowContentPassive {
+  position: relative;
+  z-index: 5;
+}
+
+.rowContentActiveWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.rowContentActive {
+  background-color: transparent;
+  color: #1D1D1F;
+}
+
+.itemContainer {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: 480px;
+}
+
+.iconContainer {
+  width: 80px;
+  height: 107px;
+  border-left: 1px solid #343435;
+  border-right: 1px solid #343435;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.diagonalLine {
+  width: 150%;
+  height: 1px;
+  background-color: #343435;
+  transform: rotate(53.36deg);
+}
+
+/* When active, the icons on the active layer should also be dark */
+.active .diagonalLine,
+.row:hover .diagonalLine {
+  background-color: rgba(29, 29, 31, 0.4);
+}
+
+.placeholderContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.placeholderText {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 16px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+}
+
+.activeDesc {
+  color: #1D1D1F;
+  font-size: 16px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  /* Sync desc appearance with the curtain too */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  transition-delay: 0.1s;
+  max-width: 200px;
+  line-height: 1.2;
+}
+
+.textContainer {
+  position: relative;
+}
+
+.largeText {
+  font-size: 64px;
+  font-family: 'FoundryGridnik', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rowContentPassive .largeText {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.rowContentActive .largeText {
+  color: #1D1D1F;
+}
+
+/* Hover States & Active States */
+.row:hover .bgLayers,
+.row.active .bgLayers,
+.row:hover .rowContentActiveWrapper,
+.row.active .rowContentActiveWrapper {
+  clip-path: inset(0 0 0 0);
+}
+
+.row:hover .layerBeige,
+.row.active .layerBeige {
+  transform: translateX(0);
+}
+
+.row:hover .layerOlive,
+.row.active .layerOlive {
+  transform: translateX(0);
+}
+
+.row:hover .activeDesc,
+.row.active .activeDesc {
+  opacity: 1;
+}
+
+@media (max-width: 1200px) {
+  .largeText {
+    font-size: 32px;
+  }
+
+  .itemContainer {
+    width: 200px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 60px 0 0 0;
+  }
+
+  .header {
+    padding: 0 40px;
+    flex-direction: row;
+    align-items: flex-end;
+  }
+
+  .footer {
+    padding: 0;
+  }
+
+  .rowContent {
+    padding: 0 40px;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 0 0 0;
+    min-height: auto;
+    /* No need for full height on mobile if not pinning */
+  }
+
+  .header {
+    padding: 32px 20px;
+    margin-bottom: 90px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 40px;
+    line-height: 38px;
+    letter-spacing: -2px;
+  }
+
+  .mainSvgDesktop {
+    display: none;
+  }
+
+  .mainSvgMobile {
+    display: block;
+  }
+
+  .svgWrapper {
+    height: auto;
+    min-height: 200px;
+    padding: 20px 0;
+    margin: 0;
+  }
+
+  .footer {
+    margin-top: 0;
+  }
+
+  .learnMoreText {
+    font-size: 14px;
+  }
+
+  .row {
+    height: auto;
+    min-height: 80px;
+  }
+
+  .rowContentPassive,
+  .rowContentActive {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: auto auto;
+    padding: 16px 20px;
+  }
+
+  .itemContainer {
+    display: contents;
+  }
+
+  .iconContainer {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #343435;
+    margin-top: 4px;
+  }
+
+  .textContainer {
+    grid-column: 2;
+    grid-row: 1;
+    padding: 0 0 4px 12px;
+  }
+
+  .largeText {
+    font-size: 20px;
+    white-space: normal;
+    line-height: 1.1;
+  }
+
+  .placeholderContainer {
+    grid-column: 2;
+    grid-row: 2;
+    padding: 0 0 0 12px;
+  }
+
+  .activeDesc {
+    display: block;
+    opacity: 0.6;
+    max-width: none;
+    font-size: 13px;
+    line-height: 1.3;
+    padding: 4px 0 0 0;
+  }
+
+  .row:hover .activeDesc,
+  .row.active .activeDesc {
+    color: inherit;
+    opacity: 1;
+  }
+}

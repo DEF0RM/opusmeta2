@@ -1,0 +1,341 @@
+.section {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  padding: 100px 40px;
+  position: relative;
+}
+
+.leftCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 140px;
+  /* Stick near top of viewport */
+  height: fit-content;
+}
+
+.title {
+  color: #FFFFFF;
+  font-size: 48px;
+  font-family: 'FoundryGridnik', var(--font-foundry), sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -2.4px;
+  text-transform: uppercase;
+}
+
+.rightCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  /* Gap between cards */
+}
+
+.card {
+  width: 100%;
+  max-width: 739px;
+  height: 420px;
+  background: #1D1D1F;
+  border: 1px solid #343435;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.animationWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.riveCanvas {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1500px;
+  height: 1500px;
+  flex-shrink: 0;
+  will-change: transform;
+}
+
+/* Individual adjustments for artboard inconsistencies */
+.card:nth-child(1) .riveCanvas {
+  margin-top: 0px;
+}
+
+.card:nth-child(2) .riveCanvas {
+  margin-top: 10px;
+}
+
+.card:nth-child(3) .riveCanvas {
+  margin-top: 0px;
+}
+
+.textWrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 44px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 2;
+  /* Optional: faint gradient to ensure text readability if animations overlap */
+  background: linear-gradient(to top, rgba(29, 29, 31, 1) 50%, rgba(29, 29, 31, 0) 100%);
+}
+
+.cardNumber {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  font-family: 'FoundryGridnik', var(--font-foundry), sans-serif;
+  font-weight: 500;
+}
+
+.cardText {
+  color: #FFFFFF;
+  font-size: 28px;
+  font-family: 'Inter', var(--font-inter), sans-serif;
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.cardTextSmall {
+  font-size: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .section {
+    flex-direction: column;
+    padding: 60px 20px;
+  }
+
+  .leftCol {
+    position: relative;
+    top: 0;
+    margin-bottom: 20px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .card {
+    height: 400px;
+    max-width: 100%;
+  }
+
+  .cardText {
+    font-size: 20px;
+  }
+
+  .textWrapper {
+    padding: 30px 20px;
+  }
+
+  .riveCanvas {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+/* GSAP/CSS Animations for SVGs */
+
+.spinSlow {
+  animation: spin 30s linear infinite;
+  transform-origin: 261px 261px;
+}
+
+.dashSpin {
+  stroke-dasharray: 4 12;
+  animation: dashMove 20s linear infinite;
+}
+
+.dashSpinReverse {
+  animation: spin 40s linear infinite reverse;
+  transform-origin: 261px 261px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dashMove {
+  from {
+    stroke-dashoffset: 0;
+  }
+
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
+
+.pulse,
+.pulseDelay1,
+.pulseDelay2,
+.pulseDelay3 {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pulse {
+  animation: pulseAnim 3s ease-in-out infinite;
+}
+
+.pulseDelay1 {
+  animation: pulseAnim 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.pulseDelay2 {
+  animation: pulseAnim 3s ease-in-out infinite;
+  animation-delay: 1.0s;
+}
+
+.pulseDelay3 {
+  animation: pulseAnim 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.pulseSlow {
+  animation: pulseAnim 6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes pulseAnim {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+.floatY {
+  animation: floatYAnim 6s ease-in-out infinite;
+}
+
+.floatYDelay {
+  animation: floatYAnim 6s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+@keyframes floatYAnim {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.ripple1 {
+  animation: rippleAnim 4s linear infinite;
+  animation-delay: 0s;
+}
+
+.ripple2 {
+  animation: rippleAnim 4s linear infinite;
+  animation-delay: 0.8s;
+}
+
+.ripple3 {
+  animation: rippleAnim 4s linear infinite;
+  animation-delay: 1.6s;
+}
+
+.ripple4 {
+  animation: rippleAnim 4s linear infinite;
+  animation-delay: 2.4s;
+}
+
+.ripple5 {
+  animation: rippleAnim 4s linear infinite;
+  animation-delay: 3.2s;
+}
+
+@keyframes rippleAnim {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  80% {
+    opacity: 0.2;
+  }
+
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+.flyThrough {
+  animation: flyThroughAnim 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.flyThroughDelay {
+  animation: flyThroughAnim 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-delay: 2s;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes flyThroughAnim {
+  0% {
+    transform: translateY(-40px) scale(1.1);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+    transform: translateY(80px) scale(0.3);
+  }
+
+  100% {
+    transform: translateY(100px) scale(0.1);
+    opacity: 0;
+  }
+}
