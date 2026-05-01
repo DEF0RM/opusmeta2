@@ -2,22 +2,31 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import BackedBy from '@/components/BackedBy';
+import IpadSection from '@/components/IpadSection';
+import ProblemSection from '@/components/ProblemSection';
+import TextRevealSection from '@/components/TextRevealSection';
+import MechanicsSection from '@/components/MechanicsSection';
+import WhyMetricWins from '@/components/WhyMetricWins';
+import { CoverageSection } from '@/components/CoverageSection';
+import GraphicDivider from '@/components/GraphicDivider';
+import Footer from '@/components/Footer';
+import ScrollOptimizer from '@/components/ScrollOptimizer';
 import PromoLoader from '@/components/PromoLoader';
-import styles from './Promo.module.css';
+import styles from './page.module.css';
 
-// We will create this component next
-import PromoHero from '@/components/PromoHero';
-
-export default function PromoPage() {
+export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isCornersReady, setIsCornersReady] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [showContent, setShowContent] = useState(false);
-  const [shouldManifest, setShouldManifest] = useState(false);
-
+  
   const arrowLeftRef = useRef<HTMLDivElement>(null);
   const arrowRightRef = useRef<HTMLDivElement>(null);
 
+  // Loading Simulation
   useEffect(() => {
     if (!isCornersReady) return;
 
@@ -25,12 +34,10 @@ export default function PromoPage() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          // Wait a bit at 100% then start exit
           setTimeout(() => setIsExiting(true), 500);
           return 100;
         }
-        // Random increments for a "real" feel
-        const inc = Math.floor(Math.random() * 5) + 1;
+        const inc = Math.floor(Math.random() * 5) + 2;
         return Math.min(prev + inc, 100);
       });
     }, 100);
@@ -38,22 +45,20 @@ export default function PromoPage() {
     return () => clearInterval(interval);
   }, [isCornersReady]);
 
-  // Handle the arrow spread and manifestation trigger
+  // Transition Logic
   useEffect(() => {
     if (isExiting) {
       const tl = gsap.timeline();
       
-      // 1. Initial appear of arrows (they start in center)
       tl.set([arrowLeftRef.current, arrowRightRef.current], { opacity: 0, scale: 0, x: 0 });
       tl.to([arrowLeftRef.current, arrowRightRef.current], { 
         opacity: 1, 
         scale: 1, 
         duration: 0.5, 
-        delay: 0.8, // Match loader's corner fly time
+        delay: 0.8,
         ease: 'back.out(2)' 
       });
 
-      // 2. Spread arrows AND trigger manifestation with a delay
       tl.to(arrowLeftRef.current, { 
         x: () => -(window.innerWidth / 2) + 32, 
         duration: 2.5, 
@@ -65,17 +70,22 @@ export default function PromoPage() {
         ease: 'expo.inOut' 
       }, "<");
 
-      // Trigger manifestation and content visibility after arrows have spread a bit
       tl.call(() => {
-        setShouldManifest(true);
         setShowContent(true);
       }, [], "+=1.2");
+      
+      // Fade out arrows eventually
+      tl.to([arrowLeftRef.current, arrowRightRef.current], {
+        opacity: 0,
+        duration: 1,
+        delay: 0.5
+      });
     }
   }, [isExiting]);
 
   return (
-    <main className={styles.promoWrapper}>
-      {/* Persistent Transition Arrows */}
+    <main className={styles.main}>
+      {/* Transition Arrows */}
       <div ref={arrowLeftRef} className={styles.arrowLeft}>⊢</div>
       <div ref={arrowRightRef} className={styles.arrowRight}>⊣</div>
 
@@ -83,14 +93,33 @@ export default function PromoPage() {
         <PromoLoader 
           progress={progress} 
           isExiting={isExiting}
+          isLanding={true}
           onCornersReady={() => setIsCornersReady(true)}
-          // onExitComplete is no longer needed to trigger setShowContent here
         />
       )}
 
-      {showContent && (
-        <PromoHero shouldManifest={shouldManifest} />
-      )}
+      <div style={{ visibility: showContent ? 'visible' : 'hidden' }}>
+        <ScrollOptimizer />
+        <Header />
+        <Hero />
+        <BackedBy />
+        <div id="the-setup">
+          <IpadSection />
+        </div>
+        <ProblemSection />
+        <TextRevealSection />
+        <div id="how-it-works">
+          <MechanicsSection />
+        </div>
+        <div id="why-metric-wins">
+          <WhyMetricWins />
+        </div>
+        <div id="integrations">
+          <CoverageSection />
+        </div>
+        <GraphicDivider />
+        <Footer />
+      </div>
     </main>
   );
 }
