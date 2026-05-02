@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 // @ts-nocheck
 import * as THREE from 'three';
@@ -15,11 +15,49 @@ import GUI from 'lil-gui';
 import Stats from 'stats.js';
 
 
-export default function TorusScene({ shouldManifest = true }: { shouldManifest?: boolean }) {
+export default function TorusScene({ 
+    shouldManifest = true,
+    debug = false
+}: { 
+    shouldManifest?: boolean,
+    debug?: boolean
+}) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
         let isDestroyed = false;
 
-// Parameters object for easy tuning
+        // Detailed Performance Monitor Setup
+        let perfMonitor: HTMLDivElement | null = null;
+        let perfFps: HTMLElement | null = null;
+        let perfMs: HTMLElement | null = null;
+        let perfCalls: HTMLElement | null = null;
+        let perfTriangles: HTMLElement | null = null;
+        let perfGeometries: HTMLElement | null = null;
+        let perfTextures: HTMLElement | null = null;
+
+        if (debug) {
+            perfMonitor = document.createElement('div');
+            perfMonitor.id = 'perf-monitor';
+            perfMonitor.innerHTML = `
+                <div class="perf-header">Detailed Performance</div>
+                <div class="perf-grid">
+                    <div class="perf-item"><span class="perf-label">FPS</span><span class="perf-value" id="perf-fps">0</span></div>
+                    <div class="perf-item"><span class="perf-label">Frame Time</span><span class="perf-value" id="perf-ms">0 ms</span></div>
+                    <div class="perf-item"><span class="perf-label">Draw Calls</span><span class="perf-value" id="perf-calls">0</span></div>
+                    <div class="perf-item"><span class="perf-label">Triangles</span><span class="perf-value" id="perf-triangles">0</span></div>
+                    <div class="perf-item"><span class="perf-label">Geometries</span><span class="perf-value" id="perf-geometries">0</span></div>
+                    <div class="perf-item"><span class="perf-label">Textures</span><span class="perf-value" id="perf-textures">0</span></div>
+                </div>
+            `;
+            document.body.appendChild(perfMonitor);
+
+            perfFps = document.getElementById('perf-fps');
+            perfMs = document.getElementById('perf-ms');
+            perfCalls = document.getElementById('perf-calls');
+            perfTriangles = document.getElementById('perf-triangles');
+            perfGeometries = document.getElementById('perf-geometries');
+            perfTextures = document.getElementById('perf-textures');
+        }
 
 // Mobile Detection
 const isMobile = window.innerWidth <= 768 || navigator.hardwareConcurrency <= 4;
@@ -248,36 +286,14 @@ window.addEventListener('load', () => {
 });
 
 
-// Detailed Performance Monitor Setup
-const perfMonitor = document.createElement('div');
-perfMonitor.id = 'perf-monitor';
-perfMonitor.innerHTML = `
-    <div class="perf-header">Detailed Performance</div>
-    <div class="perf-grid">
-        <div class="perf-item"><span class="perf-label">FPS</span><span class="perf-value" id="perf-fps">0</span></div>
-        <div class="perf-item"><span class="perf-label">Frame Time</span><span class="perf-value" id="perf-ms">0 ms</span></div>
-        <div class="perf-item"><span class="perf-label">Draw Calls</span><span class="perf-value" id="perf-calls">0</span></div>
-        <div class="perf-item"><span class="perf-label">Triangles</span><span class="perf-value" id="perf-triangles">0</span></div>
-        <div class="perf-item"><span class="perf-label">Geometries</span><span class="perf-value" id="perf-geometries">0</span></div>
-        <div class="perf-item"><span class="perf-label">Textures</span><span class="perf-value" id="perf-textures">0</span></div>
-    </div>
-`;
-document.body.appendChild(perfMonitor);
-
 let frameCount = 0;
 let lastFpsTime = performance.now();
 let fpsDisplayVisible = false;
 
-const perfFps = document.getElementById('perf-fps');
-const perfMs = document.getElementById('perf-ms');
-const perfCalls = document.getElementById('perf-calls');
-const perfTriangles = document.getElementById('perf-triangles');
-const perfGeometries = document.getElementById('perf-geometries');
-const perfTextures = document.getElementById('perf-textures');
-
 const toggleStats = () => {
     fpsDisplayVisible = !fpsDisplayVisible;
-    perfMonitor.style.display = fpsDisplayVisible ? 'block' : 'none';
+    const pm = document.getElementById('perf-monitor');
+    if (pm) pm.style.display = fpsDisplayVisible ? 'block' : 'none';
 };
 
 params.togglePerformanceGraph = toggleStats;
@@ -286,18 +302,25 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.z = params.cameraZ;
 
-const canvas = document.getElementById('app-canvas');
-        if (!canvas) return;
+const canvas = canvasRef.current;
+if (!canvas) return;
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setClearColor(0x000000, 0); // System-level transparency
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(isMobile ? 1.0 : Math.min(window.devicePixelRatio, 2.0));
 renderer.toneMapping = THREE.ReinhardToneMapping;
-renderer.info.autoReset = false; // We manually reset to accurately count post-processing passes
+renderer.info.autoReset = false; 
 
-// Post-processing Composer
+// Post-processing Composer with Alpha Support
+const renderTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+    type: THREE.HalfFloatType,
+    format: THREE.RGBAFormat,
+    samples: 4
+});
+
 const renderScene = new RenderPass(scene, camera);
-
-const composer = new EffectComposer(renderer);
+renderScene.clearAlpha = 0; // Ensure transparency is preserved in the first pass
+const composer = new EffectComposer(renderer, renderTarget);
 composer.addPass(renderScene);
 
 // 1. Depth of Field
@@ -362,8 +385,9 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
     composer.setSize(window.innerWidth, window.innerHeight);
+    renderTarget.setSize(window.innerWidth, window.innerHeight); // Keep target in sync
 
-    bokehPass.setSize(window.innerWidth, window.innerHeight);
+    if (bokehPass) bokehPass.setSize(window.innerWidth, window.innerHeight);
     if (smaaPass) smaaPass.setSize(window.innerWidth * renderer.getPixelRatio(), window.innerHeight * renderer.getPixelRatio());
 });
 
@@ -1868,7 +1892,9 @@ function initGui() {
 }
 
 // Initial setup
-initGui();
+if (debug) {
+    initGui();
+}
 rebuildRover();
 updateModelBounds();
 
@@ -1903,11 +1929,11 @@ animate();
                 });
             } catch(e) {}
         };
-    }, []);
+    }, [shouldManifest, debug]);
 
     return (
         <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}>
-            <canvas id="app-canvas" style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'auto' }} />
+            <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block', pointerEvents: 'auto', background: 'transparent' }} />
         </div>
     );
 }

@@ -21,6 +21,7 @@
   font-family: 'FoundryGridnik', sans-serif;
   z-index: 100;
   overflow: hidden;
+  opacity: 0; /* Hidden by default to prevent freeze-frame flash */
 }
 
 /* Background Layer */
@@ -60,8 +61,8 @@
 }
 
 .torusLogoWrapper {
-  width: 120px;
-  height: 120px;
+  width: 60px;
+  height: 60px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -135,7 +136,8 @@
 }
 
 .coordValue {
-  opacity: 0.4; /* More transparent as requested */
+  opacity: 1; /* Match arrows, no transparency */
+  color: #FFFFFF;
   width: 80px;
   display: inline-block;
 }
@@ -151,7 +153,9 @@
 }
 
 .connectingLine {
-  width: 260px; /* Longer on desktop */
+  width: 12vw; /* Use percentage of viewport to stay far from center */
+  max-width: 200px;
+  min-width: 20px;
   height: 1px;
   background: rgba(255, 255, 255, 0.3); /* More transparent */
   position: relative;
@@ -177,13 +181,14 @@
 }
 
 .arrowIcon {
-  font-size: 18px;
+  font-size: 24px; /* Matched original parent size */
   line-height: 1;
-  color: rgba(255, 255, 255, 0.6); /* Slightly more transparent too */
+  color: rgba(255, 255, 255, 1); /* Full opacity for the official arrows */
   display: flex;
   align-items: center;
   position: relative;
   z-index: 1;
+  font-family: monospace; /* Matched original parent font */
 }
 
 /* Footer & Subtitles Area */
@@ -254,6 +259,10 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
+  .connectingLine,
+  .coordValue {
+    display: none !important;
+  }
 }
 
 @media (max-width: 768px) {
