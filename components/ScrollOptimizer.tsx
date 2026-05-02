@@ -19,7 +19,7 @@ export default function ScrollOptimizer() {
       // This is the key fix for the "fighting with the mouse" feel
       const normalizer = ScrollTrigger.normalizeScroll({
         allowNestedScroll: true,
-        momentum: true, // Smooth momentum for Apple mice/trackpads
+        momentum: 1, // Use number 1 instead of boolean true to satisfy TS
       });
 
       // Force recalculation on refresh to prevent jumps
