@@ -38,8 +38,8 @@
 
 .topLeft { top: -55px; left: 0px; border-width: 1px 0 0 1px; }
 .topRight { top: -55px; right: 0px; border-width: 1px 1px 0 0; }
-.bottomLeft { bottom: -18px; left: 0px; border-width: 0 0 1px 1px; }
-.bottomRight { bottom: -18px; right: 0px; border-width: 0 1px 1px 0; }
+.bottomLeft { bottom: 0px; left: 0px; border-width: 0 0 1px 1px; }
+.bottomRight { bottom: 0px; right: 0px; border-width: 0 1px 1px 0; }
 
 .topRow {
   display: flex;
