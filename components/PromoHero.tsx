@@ -58,13 +58,14 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       gsap.set(backgroundRef.current, { opacity: 0 });
     }
     if (coordsRef.current && coordsRef.current.length > 0) {
-      // Start in the center
+      // Start in the center, accounting for the padding to meet exactly at 50% width
+      const padding = isMobile ? 20 : 40;
       gsap.set(coordsRef.current[0], { 
-        x: () => (window.innerWidth / 2) - 80, 
+        x: () => (window.innerWidth / 2) - padding - 12, 
         opacity: 0 
       });
       gsap.set(coordsRef.current[1], { 
-        x: () => -(window.innerWidth / 2) + 80, 
+        x: () => -(window.innerWidth / 2) + padding + 12, 
         opacity: 0 
       });
     }
@@ -98,23 +99,23 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       tl.to(containerRef.current, { opacity: 1, duration: 0.2 });
     }
 
-    // 1. Coordinates & Arrows appear in center and SPREAD (FIRST)
+    // 1. Coordinates & Arrows appear in center and SPREAD (IMMEDIATE & FAST)
     if (coordsRef.current && coordsRef.current.length > 0) {
       tl.to(coordsRef.current, {
         x: 0,
         opacity: 1,
-        duration: 2.5,
-        ease: 'expo.inOut'
-      });
+        duration: 1.2,
+        ease: 'expo.out'
+      }, 0); // Start at time 0
     }
-
+    
     // 2. Background Torus fades in during the spread
     if (backgroundRef.current) {
       tl.to(backgroundRef.current, {
         opacity: 1,
-        duration: 1.2,
+        duration: 1.0,
         ease: 'power2.out'
-      }, "-=1.5");
+      }, 0.1); // Fast fade in
     }
 
     // 3. Side Lines slide in
@@ -122,9 +123,9 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       tl.to([sideLineLeftRef.current, sideLineRightRef.current], {
         x: 0,
         opacity: 1,
-        duration: 1.2,
+        duration: 1.0,
         ease: 'expo.out'
-      }, "-=0.8");
+      }, 0.2);
     }
 
     // 4. Characters growth
@@ -133,10 +134,10 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
         opacity: 1,
         scale: 1,
         y: 0,
-        duration: 1.0,
-        stagger: 0.02,
+        duration: 0.8,
+        stagger: 0.01,
         ease: 'back.out(1.7)'
-      }, "-=1.0");
+      }, 0.3);
     }
 
     // 5. Header & Logo
@@ -144,8 +145,8 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       tl.to(headerRef.current, {
         opacity: 1,
         y: 0,
-        duration: 1.0
-      }, "<");
+        duration: 0.8
+      }, 0.4);
     }
 
     // 6. Footer slide up
@@ -153,17 +154,18 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
       tl.to(comingSoonRef.current, {
         y: 0,
         opacity: 1,
-        duration: 1.5,
+        duration: 1.0,
         ease: 'expo.out'
-      }, "-=1.5");
+      }, 0.5);
     }
 
-    if (connectingLines && connectingLines.length > 0) {
-      tl.to(connectingLines, {
+    const targetLines = containerRef.current?.querySelectorAll(`.${styles.connectingLine}`);
+    if (targetLines && targetLines.length > 0) {
+      tl.to(targetLines, {
         scaleX: 1,
-        duration: 1.2,
+        duration: 1.0,
         ease: 'expo.out'
-      }, "<");
+      }, 0.6);
     }
 
   }, [shouldManifest]);
