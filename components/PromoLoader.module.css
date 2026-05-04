@@ -117,17 +117,17 @@
   transition: width 0.1s linear;
 }
 
-/* The Long Neon Tail */
+/* The Long Neon Tail (Comet Effect) */
 .lineProgress::before {
   content: '';
   position: absolute;
-  right: -20px;
+  right: -5px; /* Pulled closer to the line tip */
   top: 50%;
   transform: translateY(-50%);
-  width: 250px; /* Very long trail */
+  width: 500px; /* Ultra long trail */
   height: 12px;
-  background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.7) 80%, #00D2FF 100%);
-  filter: blur(12px); /* Soft horizontal smear */
+  background: linear-gradient(90deg, transparent, rgba(0, 210, 255, 0.4) 50%, rgba(0, 210, 255, 0.8) 100%);
+  filter: blur(15px); /* Soft horizontal smear */
   z-index: 14;
 }
 
@@ -135,7 +135,7 @@
 .lineProgress::after {
   content: '';
   position: absolute;
-  right: -20px; /* Adjusted for elongation */
+  right: -5px; /* Pulled closer to the line tip */
   top: 50%;
   transform: translateY(-50%);
   width: 160px; /* Much wider */
