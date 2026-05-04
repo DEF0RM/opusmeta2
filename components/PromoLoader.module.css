@@ -79,7 +79,7 @@
 .loadingArea {
   position: relative;
   width: 100%;
-  height: 50px; /* Reverted to balanced height */
+  height: 100px; /* Increased for double symmetrical spacing */
   margin-top: 4px;
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 28px; /* Reverted to balanced 16px gap position */
+  top: 60px; /* Shifted down for 32px gap from cubes */
   height: 2px;
   background-color: rgba(255, 255, 255, 0.1);
   z-index: 1;
@@ -106,7 +106,7 @@
 .lineProgress {
   position: absolute;
   left: 0;
-  top: 28px; /* Match lineBase */
+  top: 60px; /* Match lineBase */
   height: 2px;
   background: linear-gradient(90deg, rgba(132, 224, 247, 0) 0%, rgba(132, 224, 247, 1) 100%);
   box-shadow: 0 0 10px rgba(132, 224, 247, 0.4);
@@ -130,7 +130,7 @@
 
 .cubeLeft, .cubeRight {
   position: absolute;
-  top: 4px; /* Perfectly centered: 16px from logo row, 16px from line */
+  top: 20px; /* Perfectly centered: 32px from logo row, 32px from line */
   z-index: 2;
 }
 
