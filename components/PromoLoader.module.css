@@ -132,7 +132,7 @@
 
 .cubeLeft, .cubeRight {
   position: absolute;
-  top: 21px; /* Just below the 1px line at center */
+  top: 11px; /* Moved above the 1px line to sit under logo/progress */
   z-index: 2;
 }
 
