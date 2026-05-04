@@ -207,8 +207,15 @@
   .bottomLeft { bottom: -12px; }
   .bottomRight { bottom: -12px; }
 
+  .lineProgress::before {
+    width: 200px; /* Reduce tail length on mobile */
+    filter: blur(10px);
+    transform: translateY(-50%) translateZ(0); /* Fix Safari filter clipping */
+  }
+
   .lineProgress::after {
-    width: 20px;
-    box-shadow: 0 0 10px #84E0F7;
+    width: 60px; /* Smaller head, but not too small to avoid blockiness */
+    box-shadow: none; /* Remove box shadow that causes sharp edges with filter in Safari */
+    transform: translateY(-50%) translateZ(0); /* Fix Safari filter clipping */
   }
 }
