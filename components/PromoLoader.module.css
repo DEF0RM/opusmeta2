@@ -110,9 +110,10 @@
   height: 2px;
   background: linear-gradient(90deg, 
     rgba(0, 210, 255, 0) 0%, 
-    rgba(0, 210, 255, 1) 90%, 
-    rgba(0, 210, 255, 0) 100%
-  ); /* Fades out at the tip to hide the cut-off */
+    #00D2FF 70%, 
+    #FFFFFF 95%, 
+    rgba(255, 255, 255, 0) 100%
+  ); /* More visible line, white-hot tip, tighter fade-out */
   box-shadow: 
     0 0 35px rgba(0, 210, 255, 0.9),
     0 0 15px rgba(0, 210, 255, 0.6),
@@ -123,23 +124,23 @@
 .lineProgress::after {
   content: '';
   position: absolute;
-  right: -15px; /* Shifted to better cover the faded line tip */
+  right: -20px; /* Adjusted for longer head */
   top: 50%;
   transform: translateY(-50%);
-  width: 140px; 
+  width: 180px; /* Stretched in length */
   height: 14px;
   background: radial-gradient(ellipse at right, 
     #FFFFFF 0%, 
-    #00D2FF 20%, 
-    rgba(0, 210, 255, 0.8) 40%, 
+    #00D2FF 15%, 
+    rgba(0, 210, 255, 0.7) 40%, 
     rgba(0, 210, 255, 0) 90%
   );
-  filter: blur(5px);
+  filter: blur(6px); /* Slightly more blur for the longer tail */
   border-radius: 50%;
   box-shadow: 
-    0 0 75px rgba(0, 210, 255, 1), 
-    0 0 40px rgba(0, 210, 255, 0.9),
-    0 0 30px #FFFFFF; /* Massive white core for 'physical' mass */
+    0 0 80px rgba(0, 210, 255, 1), 
+    0 0 40px rgba(0, 210, 255, 0.8),
+    0 0 30px #FFFFFF;
   opacity: 1;
   z-index: 15;
 }
