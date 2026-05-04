@@ -108,33 +108,38 @@
   left: 0;
   top: 40px; /* Match lineBase */
   height: 2px;
-  background: linear-gradient(90deg, rgba(132, 224, 247, 0) 0%, rgba(132, 224, 247, 1) 100%);
+  background: linear-gradient(90deg, 
+    rgba(0, 210, 255, 0) 0%, 
+    rgba(0, 210, 255, 1) 90%, 
+    rgba(0, 210, 255, 0) 100%
+  ); /* Fades out at the tip to hide the cut-off */
   box-shadow: 
-    0 0 30px rgba(132, 224, 247, 0.8),
-    0 0 10px rgba(132, 224, 247, 0.4); 
+    0 0 35px rgba(0, 210, 255, 0.9),
+    0 0 15px rgba(0, 210, 255, 0.6),
+    0 0 5px rgba(255, 255, 255, 0.4); 
   transition: width 0.1s linear;
 }
 
 .lineProgress::after {
   content: '';
   position: absolute;
-  right: -5px; /* Slightly ahead for a leading feel */
+  right: -15px; /* Shifted to better cover the faded line tip */
   top: 50%;
   transform: translateY(-50%);
-  width: 120px; /* Large aerodynamic shape */
-  height: 10px;
+  width: 140px; 
+  height: 14px;
   background: radial-gradient(ellipse at right, 
     #FFFFFF 0%, 
-    #84E0F7 15%, 
-    rgba(132, 224, 247, 0.6) 40%, 
-    rgba(132, 224, 247, 0) 90%
+    #00D2FF 20%, 
+    rgba(0, 210, 255, 0.8) 40%, 
+    rgba(0, 210, 255, 0) 90%
   );
-  filter: blur(4px);
+  filter: blur(5px);
   border-radius: 50%;
   box-shadow: 
-    0 0 50px rgba(132, 224, 247, 0.9), 
-    0 0 20px rgba(132, 224, 247, 0.7),
-    0 0 15px #FFFFFF; /* High-density core for 'mass' */
+    0 0 75px rgba(0, 210, 255, 1), 
+    0 0 40px rgba(0, 210, 255, 0.9),
+    0 0 30px #FFFFFF; /* Massive white core for 'physical' mass */
   opacity: 1;
   z-index: 15;
 }
