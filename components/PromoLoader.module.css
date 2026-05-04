@@ -97,8 +97,8 @@
 
 .progressClipper {
   position: absolute;
-  inset: -100px; /* Massive overflow area for glow */
-  overflow: visible; /* Let it breathe in all directions */
+  inset: 0; /* Restore normal coordinates */
+  overflow: visible; /* But still allow glow to bleed out */
   z-index: 10;
   pointer-events: none;
 }
