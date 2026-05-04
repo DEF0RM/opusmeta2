@@ -186,8 +186,8 @@ export default function PromoHero({ shouldManifest = false }: { shouldManifest?:
           <Image 
             src="/pre_white_logo.svg" 
             alt="Metric Logo" 
-            width={30} 
-            height={30} 
+            width={40} 
+            height={40} 
             priority 
             style={{ width: '100%', height: 'auto' }} 
           />
