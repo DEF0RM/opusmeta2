@@ -132,7 +132,7 @@
 
 .cubeLeft, .cubeRight {
   position: absolute;
-  top: 6px;
+  top: 0px; /* Mathematically centered between branding row and line (12px gap both sides) */
   z-index: 2;
 }
 
