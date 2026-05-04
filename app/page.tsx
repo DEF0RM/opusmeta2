@@ -33,27 +33,39 @@ export default function PromoPage() {
     return () => clearInterval(interval);
   }, [isCornersReady]);
 
-  // Just trigger content and manifestation
+  // Transition Logic: Start manifesting as soon as loader starts exiting
   useEffect(() => {
     if (isExiting) {
+      // Trigger manifestation for the hero
+      setShouldManifest(true);
+      
+      // After transition is done, unmount loader and clean up
       setTimeout(() => {
-        setShouldManifest(true);
         setShowContent(true);
-      }, 1000); // Delay to sync with loader exit
+      }, 2000); 
     }
   }, [isExiting]);
 
   return (
     <main className={styles.promoWrapper}>
+      {/* Show loader until content is fully ready to take over */}
       {!showContent && (
-        <PromoLoader 
-          progress={progress} 
-          isExiting={isExiting}
-          onCornersReady={() => setIsCornersReady(true)}
-        />
+        <div style={{ 
+          position: 'fixed', 
+          inset: 0, 
+          zIndex: isExiting ? 10 : 100, // Drop priority when exiting
+          pointerEvents: isExiting ? 'none' : 'auto'
+        }}>
+          <PromoLoader 
+            progress={progress} 
+            isExiting={isExiting}
+            onCornersReady={() => setIsCornersReady(true)}
+          />
+        </div>
       )}
 
-      {showContent && (
+      {/* Only mount Hero when it's time to animate, to save GPU resources */}
+      {(isExiting || showContent) && (
         <PromoHero shouldManifest={shouldManifest} />
       )}
     </main>
